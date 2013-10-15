@@ -1,0 +1,14 @@
+# Ingore common cruft
+# Mac
+.DS_STORE
+
+# Windows
+Thumbs.db
+
+# JetBrains (PHPStorm)
+.idea
+
+# Composer
+vendor
+composer.lock
+composer.phar

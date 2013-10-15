@@ -1,0 +1,19 @@
+{
+    "name": "johnsn/drizzle",
+    "description": "A Docker API library built on top of Guzzle.",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Nicholas Johns",
+            "email": "nicholas.a.johns5@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+	"php": ">= 5.3",
+	"guzzle/guzzle": "3.7.*@dev"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "3.8.*@dev"
+    }
+}

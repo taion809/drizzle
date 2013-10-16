@@ -69,14 +69,14 @@ class Drizzle
 
     public function request($uri, $method = 'get', array $options = array(), $body = '', array $headers = array())
     {
-        $this->request = $this->client->createRequest($method, $uri, $headers, $body, $options);
+        $request = $this->client->createRequest($method, $uri, $headers, $body, $options);
 
-        return $this;
+        return $request;
     }
 
-    public function response($format = 'json')
+    public function response($request, $format = 'json')
     {
-        $response = $this->request->send();
+        $response = $request->send();
 
         if($format == 'json') {
             return $response->json();
@@ -87,7 +87,8 @@ class Drizzle
 
     public function getVersion()
     {
-        $data = $this->request("/version")->response();
+        $r = $this->request("/version");
+        $data = $this->response($r);
 
         return $data;
     }

@@ -6,11 +6,13 @@ class DrizzleTest extends \PHPUnit_Framework_TestCase
 {
     public function testConstructor()
     {
-        $drizzle = new Drizzle();
-        $endpoint = $drizzle->getEndpoint();
+        $client = $this->getMockBuilder("Guzzle\Http\Client")
+            ->setConstructorArgs(array("http://127.0.0.1:4243/{version}", array("version" => "v1.5")))
+            ->getMock();
+
+        $drizzle = new Drizzle($client);
 
         $this->assertInstanceOf("Johnsn\\Drizzle\\Drizzle", $drizzle);
-        $this->assertEquals($endpoint, "http://127.0.0.1:4243/{version}");
     }
 
     public function testVersion()
@@ -23,7 +25,7 @@ class DrizzleTest extends \PHPUnit_Framework_TestCase
 
         $client = $this->buildCRRStubs("/version", "get", 200, $response_value);
 
-        $drizzle = new Drizzle('', array(), $client);
+        $drizzle = new Drizzle($client);
 
         $data = $drizzle->getVersion();
 

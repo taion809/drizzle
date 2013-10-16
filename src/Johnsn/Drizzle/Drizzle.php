@@ -8,27 +8,9 @@ class Drizzle
 {
     protected $client = null;
 
-    protected $endpoint = "http://127.0.0.1:4243/{version}";
-
-    protected $options = array('version' => 'v1.5');
-
-    private $request = null;
-
-    public function __construct($endpoint = '', array $options = array(), $client = null)
+    public function __construct(\Guzzle\Http\Client $client)
     {
-        if(!empty($endpoint)) {
-            $this->endpoint = $endpoint;
-        } 
-
-        if(!empty($options)) {
-            $this->options = $options;
-        }
-
-        if(!empty($client)) {
-            $this->client = $client;
-        } else {
-            $this->client = new Client($this->endpoint, $this->options);
-        }        
+        $this->client = $client;
     }
 
     public function getClient()
@@ -36,33 +18,9 @@ class Drizzle
         return $this->client;
     }
 
-    public function setClient($client)
+    public function setClient(\Guzzle\Http\Client $client)
     {
         $this->client = $client;
-
-        return true;
-    }
-
-    public function getEndpoint()
-    {
-        return $this->endpoint;
-    }
-
-    public function setEndpoint($endpoint)
-    {
-        $this->endpoint = $endpoint;
-
-        return true;
-    }
-
-    public function getOptions()
-    {
-        return $this->options;
-    }
-
-    public function setOptions(array $options)
-    {
-        $this->options = $options;
 
         return true;
     }

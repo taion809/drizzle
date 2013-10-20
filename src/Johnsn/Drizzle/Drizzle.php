@@ -45,7 +45,19 @@ class Drizzle
 
     public function containers($all=0, $limit=0, $since  = 0, $before = '', $size =1)
     {
-        $r = $this->request("/containers/json?all=1");
+        $uri = "/containers/json";
+
+        $query = array(
+            "all" => $all,
+            "limit" => $limit,
+            "since" => $since,
+            "before" => $before,
+            "size" => $size
+        );
+
+        $uri = $uri . "?" . http_build_query($query);
+
+        $r = $this->request($uri);
         $data = $this->response($r);
 
         return $data;

@@ -16,18 +16,30 @@ require_once __DIR__ . "/vendor/autoload.php";
 use Guzzle\Http\Client;
 use Johnsn\Drizzle\Drizzle;
 
-try
-{
-    $client = new Client("http://127.0.0.1:4243/{version}", array("version" => "v1.6"));
-    $d = new Drizzle($client);
+//$endpoint = 'http://127.0.0.1:4243', $version = 'v1.6'
+$drizzle = new Drizzle();
+$drizzle->connect();
 
-    $data = $d->version();
-    var_dump($data);
+//Return the current docker version
+$data = $drizzle->version();
 
-    $data = $d->containers();
-    var_dump($data);
+/**
+ * $data:
+ * array(2) {
+ *   ["status"]=>
+ *   int(200)
+ *   ["data"]=>
+ *   array(3) {
+ *     ["Version"]=>
+ *     string(5) "0.6.4"
+ *     ["GitCommit"]=>
+ *     string(7) "2f74b1c"
+ *     ["GoVersion"]=>
+ *     string(7) "go1.1.2"
+ *   }
+ * }
+ */
 
-} catch(\Guzzle\Http\Exception\CurlException $e) {
-    var_dump($e->getMessage());
-}
+var_dump($data);
+
 ```

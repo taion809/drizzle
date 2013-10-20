@@ -8,9 +8,11 @@ class Drizzle
 {
     protected $client = null;
 
-    public function __construct(\Guzzle\Http\Client $client)
+    public function __construct($client = null)
     {
-        $this->client = $client;
+        if(!empty($client)) {
+            $this->client = $client;
+        }
     }
 
     public function getClient()
@@ -18,34 +20,20 @@ class Drizzle
         return $this->client;
     }
 
-    public function setClient(\Guzzle\Http\Client $client)
+    public function setClient($client)
     {
         $this->client = $client;
-
-        return true;
     }
 
-    public function request($uri, $method = 'get', array $options = array(), $body = '', array $headers = array())
+    public function connect($endpoint = 'http://127.0.0.1:4243', $version = 'v1.6')
     {
-        $request = $this->client->createRequest($method, $uri, $headers, $body, $options);
-
-        return $request;
+        $this->client = new \Johnsn\Drizzle\Client\GuzzleClient($endpoint, $version);
+        return $this;
     }
 
-    public function response($request, $format = 'json')
+    public function containers($all=0, $limit=-1, $since  = '', $before = '', $size =1)
     {
-        $response = $request->send();
-
-        if($format == 'json') {
-            return $response->json();
-        }
-
-        return $response;
-    }
-
-    public function containers($all=0, $limit=0, $since  = 0, $before = '', $size =1)
-    {
-        $uri = "/containers/json";
+        $uri = "containers/json";
 
         $query = array(
             "all" => $all,
@@ -55,26 +43,21 @@ class Drizzle
             "size" => $size
         );
 
-        $uri = $uri . "?" . http_build_query($query);
-
-        $r = $this->request($uri);
-        $data = $this->response($r);
+        $data = $this->client->build($uri, $query)->sendRequest();
 
         return $data;
     }
     
     public function version()
     {
-        $r = $this->request("/version");
-        $data = $this->response($r);
+        $data = $this->client->build("version")->sendRequest();
 
         return $data;
     }
 
     public function info()
     {
-        $r = $this->request("/info");
-        $data = $this->response($r);
+        $data = $this->client->build("info")->sendRequest();
 
         return $data;   
     }

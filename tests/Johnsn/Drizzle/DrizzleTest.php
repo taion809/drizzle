@@ -4,30 +4,44 @@ namespace Johnsn\Drizzle;
 
 class DrizzleTest extends \PHPUnit_Framework_TestCase
 {
-    public function testConstructor()
+    protected $client = null;
+
+    public function setUp()
     {
-        $client = $this->getMockBuilder("Guzzle\Http\Client")
-            ->setConstructorArgs(array("http://127.0.0.1:4243/{version}", array("version" => "v1.5")))
-            ->getMock();
+        $client = new \Johnsn\Drizzle\Client\GuzzleClient("http://test.com", "v1.2");
+        $this->client = new Drizzle($client);
+    }
 
-        $drizzle = new Drizzle($client);
+    public function testClientInstanceOf()
+    {
+        $expected = 'Johnsn\Drizzle\Client\GuzzleClient';
 
-        $this->assertInstanceOf("Johnsn\\Drizzle\\Drizzle", $drizzle);
+        $this->assertInstanceOf($expected, $this->client->getClient());
+    }
+
+    public function testConnectCreatesNewClient()
+    {
+        $expected = 'Johnsn\Drizzle\Client\GuzzleClient';
+
+        $client = $this->client->connect()->getClient();
+
+        $this->assertInstanceOf($expected, $client);
     }
 
     public function testVersion()
     {
         $response_value = array(
-            "Version"=> "0.6.3",
-            "GitCommit" => "b0a49a3",
-            "GoVersion" => "go1.1.2",
+            'status' => 200,
+            'data' => array(
+                "Version"=> "0.6.4",
+                "GitCommit" => "2f74b1c",
+                "GoVersion" => "go1.1.2",
+            ),
         );
 
-        $client = $this->buildCRRStubs("/version", "get", 200, $response_value);
-
-        $drizzle = new Drizzle($client);
-
-        $data = $drizzle->version();
+        $gclient = $this->buildClient("build", $response_value);
+        $this->client->setClient($gclient);
+        $data = $this->client->version();
 
         $this->assertEquals($response_value, $data);
     }
@@ -40,10 +54,9 @@ class DrizzleTest extends \PHPUnit_Framework_TestCase
             "Images" => 3
         );
 
-        $client = $this->buildCRRStubs('/info', 'get', 200, $response_value);
-
-        $drizzle = new Drizzle($client);
-        $data = $drizzle->info();
+        $gclient = $this->buildClient("build", $response_value);
+        $this->client->setClient($gclient);
+        $data = $this->client->info();
 
         $this->assertEquals($response_value, $data);
     }
@@ -63,36 +76,26 @@ class DrizzleTest extends \PHPUnit_Framework_TestCase
             ),
         );
 
-        $client = $this->buildCRRStubs('/containers/json', 'get', 200, $response_value);
-
-        $drizzle = new Drizzle($client);
-        $data = $drizzle->containers();
+        $gclient = $this->buildClient("build", $response_value);
+        $this->client->setClient($gclient);
+        $data = $this->client->containers(1);
 
         $this->assertEquals($response_value, $data);
     }
 
-    public function buildCRRStubs($uri, $method, $status, $result)
+    public function buildClient($buildMethod, $result, $responseMethod = 'sendRequest')
     {
-        $response = $this->getMockBuilder("Guzzle\Http\Message\Response")
-            ->setConstructorArgs(array($status))
+        $client = $this->getMockBuilder("Johnsn\Drizzle\Client\GuzzleClient")
             ->getMock();
-        $response->expects($this->once())
-                        ->method('json')
-                        ->will($this->returnValue($result));
-        
-        $request = $this->getMockBuilder("Guzzle\Http\Message\Request")
-            ->setConstructorArgs(array($method, $uri))
-            ->getMock();
-        $request->expects($this->once())
-                        ->method('send')
-                        ->will($this->returnValue($response));
 
-        $client = $this->getMockBuilder("Guzzle\Http\Client")
-            ->setConstructorArgs(array("http://127.0.0.1:4243/{version}", array("version" => "v1.5")))
-            ->getMock();
         $client->expects($this->once())
-                        ->method('createRequest')
-                        ->will($this->returnValue($request));
+                        ->method($buildMethod)
+                        ->will($this->returnValue($client));
+
+        $client->expects($this->once())
+                        ->method($responseMethod)
+                        ->will($this->returnValue($result));
+
         return $client;
     }
 }

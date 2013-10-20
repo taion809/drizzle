@@ -43,11 +43,27 @@ class Drizzle
         return $response;
     }
 
-    public function getVersion()
+    public function containers($all=0, $limit=0, $since  = 0, $before = '', $size =1)
+    {
+        $r = $this->request("/containers/json?all=1");
+        $data = $this->response($r);
+
+        return $data;
+    }
+    
+    public function version()
     {
         $r = $this->request("/version");
         $data = $this->response($r);
 
         return $data;
+    }
+
+    public function info()
+    {
+        $r = $this->request("/info");
+        $data = $this->response($r);
+
+        return $data;   
     }
 }

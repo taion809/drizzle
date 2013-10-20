@@ -27,9 +27,48 @@ class DrizzleTest extends \PHPUnit_Framework_TestCase
 
         $drizzle = new Drizzle($client);
 
-        $data = $drizzle->getVersion();
+        $data = $drizzle->version();
 
-        $this->assertNotEmpty($data);
+        $this->assertEquals($response_value, $data);
+    }
+
+    public function testInfoReturnsInfo()
+    {
+        $response_value = array(
+            "Debug" => false,
+            "Containers" => 3,
+            "Images" => 3
+        );
+
+        $client = $this->buildCRRStubs('/info', 'get', 200, $response_value);
+
+        $drizzle = new Drizzle($client);
+        $data = $drizzle->info();
+
+        $this->assertEquals($response_value, $data);
+    }
+
+    public function testListContainersReturnsArray()
+    {
+        //Subset
+        $response_value = array(
+            array(
+                "Id" => "fd87d67dc1913289a5b3365ac7f2c1ed51e4ce7b25f3422dca99d5431e706aaa"
+            ),
+            array(
+                "Id" => "ee684be87bcb44fa63b70de8017ebac267574053265400ec5b39442985ec72ea"
+            ),
+            array(
+                "Id" => "b03991d1580b1f6192311ed0b31c44399aa22f03d2ed0a6468cbcffced1b16bb"
+            ),
+        );
+
+        $client = $this->buildCRRStubs('/containers/json', 'get', 200, $response_value);
+
+        $drizzle = new Drizzle($client);
+        $data = $drizzle->containers();
+
+        $this->assertEquals($response_value, $data);
     }
 
     public function buildCRRStubs($uri, $method, $status, $result)

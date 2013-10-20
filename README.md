@@ -13,7 +13,6 @@ A simple docker remote api built for packagist ontop of guzzle.
 
 require_once __DIR__ . "/vendor/autoload.php";
 
-use Guzzle\Http\Client;
 use Johnsn\Drizzle\Drizzle;
 
 //$endpoint = 'http://127.0.0.1:4243', $version = 'v1.6'

@@ -175,6 +175,28 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $data);
     }
 
+    public function testWaitReturnsArray()
+    {
+        $response_value = array(
+            'StatusCode' => 0,
+        );
+
+        $gclient = $this->buildClient("buildJson", $response_value);
+        $this->client->setClient($gclient);
+        $data = $this->client->wait($this->container_id);
+
+        $this->assertEquals($response_value, $data);
+    }
+
+    public function testCopyReturnsNotImplementedString()
+    {
+        $expected = "Not yet implemented";
+
+        $data = $this->client->copy($this->container_id);
+
+        $this->assertEquals($expected, $data);
+    }
+
     public function buildClient($buildMethod, $result, $responseMethod = 'sendRequest')
     {
         $client = $this->getMockBuilder("Johnsn\\Drizzle\\Client\\GuzzleClient")

@@ -26,14 +26,4 @@ abstract class AbstractProvider
     {
         return $this->client;
     }
-
-    public function setBaseApi($baseApi)
-    {
-        $this->baseApi = $baseApi;
-    }
-
-    public function getBaseApi()
-    {
-        return $this->baseApi;
-    }
 }

@@ -10,7 +10,7 @@ class DrizzleTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $client = new GuzzleClient("http://test.com", "v1.2");
+        $client = new GuzzleClient("http://127.0.0.1:4243", "v1.6");
         $this->client = new Drizzle($client);
     }
 

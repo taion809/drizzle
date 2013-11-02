@@ -33,6 +33,6 @@ class Drizzle
 
     public function getContainerProvider()
     {
-        return new Providers\Container($this->client, '');
+        return new Providers\Container($this->client);
     }
 }

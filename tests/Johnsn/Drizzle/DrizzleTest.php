@@ -2,13 +2,15 @@
 
 namespace Johnsn\Drizzle;
 
+use Johnsn\Drizzle\Client\GuzzleClient;
+
 class DrizzleTest extends \PHPUnit_Framework_TestCase
 {
     protected $client = null;
 
     public function setUp()
     {
-        $client = new \Johnsn\Drizzle\Client\GuzzleClient("http://test.com", "v1.2");
+        $client = new GuzzleClient("http://test.com", "v1.2");
         $this->client = new Drizzle($client);
     }
 

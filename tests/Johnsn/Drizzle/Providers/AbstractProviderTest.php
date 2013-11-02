@@ -70,7 +70,7 @@ class AbstractProviderTest extends \PHPUnit_Framework_TestCase
 
         $client = $this->buildClient("build", $response_value);
         $stub = $this->buildStub($client);
-        
+
         $data = $stub->info();
 
         $this->assertEquals($response_value, $data);

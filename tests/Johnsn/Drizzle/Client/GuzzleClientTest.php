@@ -8,21 +8,21 @@ class DrizzleTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->client = new GuzzleClient("http://test.com", "v1.6");
+        $this->client = new GuzzleClient("http://127.0.0.1:4243", "v1.6");
     }
 
     //Maybe unnecessary?
     public function testConstructor()
     {
-        $this->assertInstanceOf("Johnsn\Drizzle\Contracts\ClientInterface", $this->client);
-        $this->assertInstanceOf("Guzzle\Http\Client", $this->client);
+        $this->assertInstanceOf("Johnsn\\Drizzle\\Contracts\\ClientInterface", $this->client);
+        $this->assertInstanceOf("Guzzle\\Http\\Client", $this->client);
     }
 
     public function testBuildReturnsRequestObject()
     {
         $request = $this->client->build('info')->getRequest();
 
-        $this->assertInstanceOf("Guzzle\Http\Message\Request", $request);
+        $this->assertInstanceOf("Guzzle\\Http\\Message\\Request", $request);
     }
 
     public function testBuildResponseContainsQuery()
@@ -37,14 +37,14 @@ class DrizzleTest extends \PHPUnit_Framework_TestCase
         $request = $this->client->build('info')->getRequest();
 
         $this->assertEquals('get', strtolower($request->getMethod()));
-        $this->assertEquals("http://test.com/v1.6/info", $request->getUrl());
+        $this->assertEquals("http://127.0.0.1:4243/v1.6/info", $request->getUrl());
     }
 
     public function testBuildJsonResponseReturnsRequestObject()
     {
         $request = $this->client->buildJson('info', array())->getRequest();
 
-        $this->assertInstanceOf("Guzzle\Http\Message\Request", $request);
+        $this->assertInstanceOf("Guzzle\\Http\\Message\\Request", $request);
     }
 
     public function testBuildJsonResponseProperHeaderAndUrl()
@@ -53,7 +53,7 @@ class DrizzleTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals("application/json", $request->getHeader('Content-Type'));
         $this->assertEquals('post', strtolower($request->getMethod()));
-        $this->assertEquals("http://test.com/v1.6/info", $request->getUrl());
+        $this->assertEquals("http://127.0.0.1:4243/v1.6/info", $request->getUrl());
     }
 
     public function testSendReturnsArray()
@@ -96,7 +96,7 @@ class DrizzleTest extends \PHPUnit_Framework_TestCase
     {
         $response = $this->buildResponse($result, $status, $format);
         
-        $request = $this->getMockBuilder("Guzzle\Http\Message\Request")
+        $request = $this->getMockBuilder("Guzzle\\Http\\Message\\Request")
             ->setConstructorArgs(array($method, $uri))
             ->getMock();
 
@@ -109,7 +109,7 @@ class DrizzleTest extends \PHPUnit_Framework_TestCase
 
     public function buildResponse($result, $status = 200, $format='json')
     {
-        $response = $this->getMockBuilder("Guzzle\Http\Message\Response")
+        $response = $this->getMockBuilder("Guzzle\\Http\\Message\\Response")
             ->setConstructorArgs(array($status))
             ->getMock();
 

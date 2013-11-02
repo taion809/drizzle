@@ -31,6 +31,11 @@ class Drizzle
         return $this;
     }
 
+    public function getContainerProvider()
+    {
+        return new Providers\Container($this->client, '');
+    }
+
     public function containers($all=0, $limit=-1, $since  = '', $before = '', $size =1)
     {
         $uri = "containers/json";

@@ -49,7 +49,7 @@ class DrizzleTest extends \PHPUnit_Framework_TestCase
 
     public function testBuildJsonResponseProperHeaderAndUrl()
     {
-        $request = $this->client->buildJson('info', array())->getRequest();
+        $request = $this->client->buildJson('info', array('stuff'))->getRequest();
 
         $this->assertEquals("application/json", $request->getHeader('Content-Type'));
         $this->assertEquals('post', strtolower($request->getMethod()));

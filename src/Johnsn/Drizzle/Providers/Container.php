@@ -193,7 +193,7 @@ class Container extends AbstractProvider
      */
     public function attach()
     {
-        return "Not yet implemented because holy crap...";
+        return "Not yet implemented";
     }
 
     /**

@@ -45,9 +45,13 @@ class GuzzleClient extends Client implements ClientInterface
         return $this;
     }
 
-    public function buildJson($uri, array $fields)
+    public function buildJson($uri, array $fields = array())
     {
-        $this->request = $this->post($uri, array("Content-type" => "application/json"), json_encode($fields));
+        if(!empty($fields)) {
+            $this->request = $this->post($uri, array("Content-type" => "application/json"), json_encode($fields));
+        } else {
+            $this->request = $this->post($uri);
+        }
 
         return $this;
     }

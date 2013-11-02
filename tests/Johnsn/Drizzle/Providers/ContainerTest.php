@@ -113,6 +113,67 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($response_value, $data);
     }
 
+    public function testExportReturnsNotImplementedString()
+    {
+        $expected = "Not yet implemented";
+
+        $data = $this->client->export($this->container_id);
+
+        $this->assertEquals($expected, $data);
+    }
+
+    public function testStartContainerReturnsEmptyString()
+    {
+        $expected = "";
+
+        $gclient = $this->buildClient("buildJson", $expected);
+        $this->client->setClient($gclient);
+        $data = $this->client->start($this->container_id);
+
+        $this->assertEquals($expected, $data);
+    }
+
+    public function testStopContainerReturnsEmptyString()
+    {
+        $expected = "";
+
+        $gclient = $this->buildClient("buildJson", $expected);
+        $this->client->setClient($gclient);
+        $data = $this->client->stop($this->container_id);
+
+        $this->assertEquals($expected, $data);
+    }
+
+    public function testRestartContainerReturnsEmptyString()
+    {
+        $expected = "";
+
+        $gclient = $this->buildClient("buildJson", $expected);
+        $this->client->setClient($gclient);
+        $data = $this->client->restart($this->container_id);
+
+        $this->assertEquals($expected, $data);
+    }
+
+    public function testKillContainerReturnsEmptyString()
+    {
+        $expected = "";
+
+        $gclient = $this->buildClient("buildJson", $expected);
+        $this->client->setClient($gclient);
+        $data = $this->client->kill($this->container_id);
+
+        $this->assertEquals($expected, $data);
+    }
+
+    public function testAttachReturnsNotImplementedString()
+    {
+        $expected = "Not yet implemented";
+
+        $data = $this->client->attach($this->container_id);
+
+        $this->assertEquals($expected, $data);
+    }
 
     public function buildClient($buildMethod, $result, $responseMethod = 'sendRequest')
     {

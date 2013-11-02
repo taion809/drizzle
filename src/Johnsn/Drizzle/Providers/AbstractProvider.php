@@ -26,4 +26,18 @@ abstract class AbstractProvider
     {
         return $this->client;
     }
+
+    public function version()
+    {
+        $data = $this->client->build("version")->sendRequest();
+
+        return $data;
+    }
+
+    public function info()
+    {
+        $data = $this->client->build("info")->sendRequest();
+
+        return $data;
+    }
 }

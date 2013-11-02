@@ -35,35 +35,4 @@ class Drizzle
     {
         return new Providers\Container($this->client, '');
     }
-
-    public function containers($all=0, $limit=-1, $since  = '', $before = '', $size =1)
-    {
-        $uri = "containers/json";
-
-        $query = array(
-            "all" => $all,
-            "limit" => $limit,
-            "since" => $since,
-            "before" => $before,
-            "size" => $size
-        );
-
-        $data = $this->client->build($uri, $query)->sendRequest();
-
-        return $data;
-    }
-    
-    public function version()
-    {
-        $data = $this->client->build("version")->sendRequest();
-
-        return $data;
-    }
-
-    public function info()
-    {
-        $data = $this->client->build("info")->sendRequest();
-
-        return $data;   
-    }
 }

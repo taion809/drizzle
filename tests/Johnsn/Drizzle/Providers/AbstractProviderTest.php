@@ -21,10 +21,7 @@ class AbstractProviderTest extends \PHPUnit_Framework_TestCase
 
     public function testSetClientFromConstructor()
     {
-        $stub = $this->getMockForAbstractClass('Johnsn\Drizzle\Providers\AbstractProvider', array($this->client));
-        $stub->expects($this->any())
-            ->method('setClient')
-            ->will($this->returnValue(null));
+        $stub = $this->buildStub($this->client);
 
         $expected = "Johnsn\\Drizzle\\Client\\GuzzleClient";
         $result = $stub->getClient();
@@ -34,10 +31,7 @@ class AbstractProviderTest extends \PHPUnit_Framework_TestCase
 
     public function testSetClient()
     {
-        $stub = $this->getMockForAbstractClass('Johnsn\Drizzle\Providers\AbstractProvider', array(null));
-        $stub->expects($this->any())
-            ->method('setClient')
-            ->will($this->returnValue(null));
+        $stub = $this->buildStub();
 
         $this->assertNull($stub->setClient($this->client));
 
@@ -59,9 +53,8 @@ class AbstractProviderTest extends \PHPUnit_Framework_TestCase
         );
 
         $client = $this->buildClient("build", $response_value);
-        $stub = $this->buildStub();
+        $stub = $this->buildStub($client);
 
-        $stub->setClient($client);
         $data = $stub->version();
 
         $this->assertEquals($response_value, $data);
@@ -76,17 +69,16 @@ class AbstractProviderTest extends \PHPUnit_Framework_TestCase
         );
 
         $client = $this->buildClient("build", $response_value);
-        $stub = $this->buildStub();
-
-        $stub->setClient($client);
+        $stub = $this->buildStub($client);
+        
         $data = $stub->info();
 
         $this->assertEquals($response_value, $data);
     }
 
-    public function buildStub()
+    public function buildStub($client = null)
     {
-        $stub = $this->getMockForAbstractClass('Johnsn\Drizzle\Providers\AbstractProvider', array(null));
+        $stub = $this->getMockForAbstractClass('Johnsn\Drizzle\Providers\AbstractProvider', array($client));
         $stub->expects($this->any())
             ->method('setClient')
             ->will($this->returnValue(null));
